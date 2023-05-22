@@ -79,7 +79,7 @@ AnimatorState:
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
-  m_CycleOffsetParameter: MoveSpeed
+  m_CycleOffsetParameter: 
   m_TimeParameter: 
 --- !u!1101 &-1712411856254891576
 AnimatorStateTransition:
@@ -112,7 +112,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Player
+  m_Name: Player_0522
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: MoveSpeed
