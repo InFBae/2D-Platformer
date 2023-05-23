@@ -10,10 +10,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float movePower;
     [SerializeField] private float jumpPower;
 
+    [SerializeField] LayerMask groundLayer;
+
     private Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer render;
     private Vector2 inputDir;
+    private bool isGround;
 
     private void Awake()
     {
@@ -25,6 +28,11 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         Move();
+    }
+
+    private void FixedUpdate()
+    {
+        GroundCheck();
     }
 
     private void Move()
@@ -47,16 +55,48 @@ public class PlayerController : MonoBehaviour
 
     private void OnJump(InputValue inputValue)
     {
+        if(isGround)
+        {
+            Jump();
+        }       
+    }
+
+    private void Jump()
+    {
         rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
+        isGround = true;
         animator.SetBool("IsGround", true);
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
+        isGround = false;
         animator.SetBool("IsGround", false);
     }
+
+    private void GroundCheck()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1.5f, groundLayer);
+        
+        if(hit.collider != null)
+        {
+            Debug.DrawRay(transform.position, new Vector3(hit.point.x, hit.point.y, 0) - transform.position, Color.red);
+            Debug.Log(hit.collider.gameObject.name);
+            isGround = true;
+            animator.SetBool("IsGround", true);
+        }
+        else
+        {
+            Debug.DrawRay(transform.position, Vector3.down * 1.5f, Color.green);
+            isGround = false;
+            animator.SetBool("IsGround", false);
+        }
+    }
+
+    
+
 }
